@@ -839,7 +839,8 @@ class helper_plugin_extension_extension extends DokuWiki_Plugin {
         }
 
         // download
-        if(!$file = io_download($url, $tmp.'/', true, $file, 0)) {
+        if(!$file = io_download($url, $tmp.'/', true, $file, 0,
+                                'DokuWiki HTTP Client (Extension Manager)')) {
             io_rmdir($tmp, true);
             throw new Exception(sprintf($this->getLang('error_download'), '<bdi>'.hsc($url).'</bdi>'));
         }
