@@ -649,14 +649,18 @@ function io_mktmpdir() {
  * @param bool   $useAttachment if true: try to use name of download, uses otherwise $defaultName, false: uses $file as path to file
  * @param string $defaultName   fallback for if using $useAttachment
  * @param int    $maxSize       maximum file size
+ * @param string $agent         alternative HTTP user-agent header
  * @return bool|string          if failed false, otherwise true or the name of the file in the given dir
  */
-function io_download($url,$file,$useAttachment=false,$defaultName='',$maxSize=2097152){
+function io_download($url,$file,$useAttachment=false,$defaultName='',$maxSize=2097152,$agent=null){
     global $conf;
     $http = new DokuHTTPClient();
     $http->max_bodysize = $maxSize;
     $http->timeout = 25; //max. 25 sec
     $http->keep_alive = false; // we do single ops here, no need for keep-alive
+    if ($agent !== null) {
+        $http->agent = $agent;
+    }
 
     $data = $http->get($url);
     if(!$data) return false;
