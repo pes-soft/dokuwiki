@@ -230,7 +230,7 @@ class Doku_Plugin_Controller {
             }
             // backup current file (remove any existing backup)
             if (file_exists($file)) {
-                $backup = $file.'.bak';
+                $backup = preg_replace('/\.php$/', '', $file).'.bak.php';
                 if (file_exists($backup)) @unlink($backup);
                 if (!@copy($file,$backup)) return false;
                 if (!empty($conf['fperm'])) chmod($backup, $conf['fperm']);

@@ -128,15 +128,16 @@ if (!class_exists('configuration')) {
 
             // write back to the last file in the local config cascade
             $file = end($this->_local_files);
+            $file_backup = preg_replace('/\.php$/', '', $file).'.bak.php';
 
             // backup current file (remove any existing backup)
             if (file_exists($file) && $backup) {
-                if (file_exists($file.'.bak')) @unlink($file.'.bak');
-                if (!io_rename($file, $file.'.bak')) return false;
+                if (file_exists($file_backup)) @unlink($file_backup);
+                if (!io_rename($file, $file_backup)) return false;
             }
 
             if (!$fh = @fopen($file, 'wb')) {
-                io_rename($file.'.bak', $file);     // problem opening, restore the backup
+                io_rename($file_backup, $file);     // problem opening, restore the backup
                 return false;
             }
 
